@@ -12,7 +12,7 @@ const offers = ref<Offer[]>([])
 
 useSeoMeta({
   title: "Home",
-  description: "Main page with promotions",
+  description: "Main page with events",
 })
 
 //True if page is loading

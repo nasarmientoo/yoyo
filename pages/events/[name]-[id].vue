@@ -104,13 +104,11 @@ useSeoMeta({
         </div>
 
         <div class="info-section">
-          <div class="row-1">
-            <h1 class="activity-title">{{ eventItem.name }}</h1>
-            <p class="activity-description">{{ eventItem.description }}</p>
-          </div>
+          <div class="top-section">
+            <div class="top-left">
+              <h1 class="activity-title">{{ eventItem.name }}</h1>
+              <p class="activity-description">{{ eventItem.description }}</p>
 
-          <div class="row-2">
-            <div class="left-column">
               <div class="highlights">
                 <h3>Highlights:</h3>
                 <ul>
@@ -126,7 +124,7 @@ useSeoMeta({
               </div>
             </div>
 
-            <div v-if="eventItem.Artists?.length" class="right-column">
+            <div v-if="eventItem.Artists?.length" class="top-right">
               <h3>Artists:</h3>
               <div class="artist-cards">
                 <NuxtLink
@@ -142,7 +140,7 @@ useSeoMeta({
             </div>
           </div>
 
-          <div v-if="eventItem.Artists?.length" class="row-3">
+          <div v-if="eventItem.Artists?.length" class="bottom-section">
             <Timetable :artists="eventItem.Artists" />
           </div>
         </div>
@@ -203,30 +201,24 @@ useSeoMeta({
   gap: 2rem;
 }
 
-.row-1 {
+.top-section {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 2rem;
+}
+
+.top-left {
   display: flex;
   flex-direction: column;
   gap: 1rem;
 }
 
-.row-2 {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2rem;
-}
-
-.left-column {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.right-column {
+.top-right {
   display: flex;
   flex-direction: column;
 }
 
-.row-3 {
+.bottom-section {
   margin-top: 0;
   overflow-x: auto;
 }
@@ -249,7 +241,7 @@ useSeoMeta({
 
 .highlights h3,
 .bring-section h3,
-.right-column h3 {
+.top-right h3 {
   font-size: var(--font-sub-subtitle);
   font-weight: 700;
   margin-bottom: 0.75rem;
@@ -290,8 +282,8 @@ useSeoMeta({
 }
 
 .artist-card img {
-  width: 120px;
-  height: 150px;
+  width: 150px;
+  height: 200px;
   object-fit: cover;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -325,11 +317,7 @@ useSeoMeta({
     max-height: 400px;
   }
 
-  .row-1 {
-    gap: 1rem;
-  }
-
-  .row-2 {
+  .top-section {
     grid-template-columns: 1fr;
     gap: 1.5rem;
   }
