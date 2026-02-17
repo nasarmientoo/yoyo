@@ -1,0 +1,226 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+.about-us {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+}
+
+.hero {
+    position: relative;
+    width: 100%;
+    height: 80vh;
+    min-height: 400px;
+    overflow: hidden;
+}
+
+.hero-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(1.1);
+    opacity: 0.8;
+}
+
+.hero-card-back {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 640px;
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 20px;
+    padding: 32px;
+}
+
+.hero-card-front {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50vw;
+    max-width: 600px;
+    background-color: #ffffffc7;
+    border-radius: 1.5vw;
+    padding: 2vw;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    text-align: center;
+
+    font-size: var(--font-medium-text);
+}
+
+.hero-title {
+    font-weight: 600;
+    /*font-size: 28px;*/
+    color: #1a1a1a;
+    font-size: var(--font-sub-subtitle);
+    padding-bottom: 1vw;
+}
+
+.hero-description {
+    font-size: var(--font-medium-text);
+    line-height: 1.6;
+    font-style: italic;
+    color: #333333;
+}
+
+.approach {
+    width: 100%;
+    background-color: #fbf8fc;
+    padding: 60px 0;
+}
+
+.approach-content {
+    max-width: 75%;
+    margin: 0 auto;
+    padding: 0 20px;
+    text-align: left;
+}
+
+.approach-title {
+    font-weight: 600;
+    font-size: var(--font-small-subtitle);
+    color: #1a1a1a;
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.approach-intro,
+.approach-description {
+    font-size: var(--font-text);
+    color: #333333;
+    margin-bottom: 24px;
+    line-height: 1.6;
+}
+
+.approach-list {
+    list-style: disc inside;
+    margin: 0 0 24px 0;
+    padding-left: 20px;
+}
+
+.approach-list li {
+    font-size: var(--font-text);
+    color: #333333;
+    margin-bottom: 12px;
+}
+
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.gallery-item {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+}
+
+.gallery-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+/* Contact Section */
+.contact {
+    width: 100%;
+    background-color: #f2f2f2;
+    padding: 60px 20px;
+    text-align: center;
+}
+
+.contact-title {
+    font-weight: 600;
+    font-size: var(--font-small-subtitle);
+    color: #1a1a1a;
+    margin-bottom: 16px;
+}
+
+.contact-text {
+    font-size: var(--font-text);
+    color: #333333;
+    margin-bottom: 32px;
+    line-height: 1.6;
+}
+
+.contact-button {
+    display: inline-block;
+    background-color: #C1A3E0;
+    width: 220px;
+    height: 48px;
+    font-weight: 600;
+    font-size: 16px;
+    color: #ffffff;
+    text-align: center;
+    line-height: 48px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.clickable-link {
+    color: #5b3083;
+    font-weight: 700;
+    text-decoration: underline;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-block;
+}
+
+.clickable-link:hover {
+    transform: scale(1.05);
+    color: #a67ed4;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.approach-intro,
+.approach-description,
+.approach-list li {
+    font-size: var(--font-text);
+}
+
+@media (max-width: 768px) {
+    .hero {
+        height: 100vh !important;
+        min-height: unset;
+        overflow: hidden;
+    }
+
+    .hero-card-front {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: min(90%, 600px);
+        max-width: 600px;
+        height: auto;
+        max-height: 90vh;
+
+        overflow-y: auto;
+        padding: min(2vw, 32px);
+        border-radius: clamp(12px, 1.5vw, 24px);
+
+        box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+        background-color: #fff;
+    }
+}

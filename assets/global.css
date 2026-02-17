@@ -1,0 +1,56 @@
+@import url('https://fonts.googleapis.com/css2?family=Grandstander:ital,wght@0,100..900;1,100..900&family=Jost:ital,wght@0,100..900;1,100..900&family=Lacquer&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+}
+:root {
+
+    /* Fonts */
+    --font-montserrat: Jost;
+
+    /* font sizes */
+    --font-big-title: clamp(2.5rem, 6vw, 85px);
+    --font-small-title: clamp(2.5rem, 5vw, 66px);
+    --font-subtitle:    clamp(32px,  4vw, 50px);
+    --font-small-subtitle: clamp(32px,  3vw, 40px);
+    --font-sub-subtitle: clamp(20px,  2.2vw, 25px);
+    --font-text:  clamp(16px, 2.2vw, 22px);
+    --font-small-text: clamp(14px,  1vw, 15px);
+    --font-medium-text: clamp(16px,  2vw, 18px);
+    --font-big-text: clamp(28px, 2vw, 34px);
+
+
+    /* Paddings */
+    --padding-9xl: 28px;
+
+    /* Border radiuses */
+    --br-xl: 20px;
+
+    /* Figma Variables */
+
+    /* Color Variables */
+    --Black: #000;
+    --Light-Grey: #d5d5d5;
+    --Very-Light-Grey: #f3f3f3;
+    --White: #fff;
+
+    /* Number Variables */
+    --Corner-Full: 1000px;
+
+}
+
+p, li, a, h1, h2, h3, h4, h5, h6, label, button, input, textarea{
+    font-family: 'Jost', sans-serif;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
