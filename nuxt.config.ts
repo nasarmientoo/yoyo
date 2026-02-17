@@ -4,7 +4,7 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
 
   app: {
-    baseURL: '/YoYo/',
+      baseURL: '/yoyo/',
     head: {
       title: 'YoYo House',
       htmlAttrs: { lang: 'en' },
