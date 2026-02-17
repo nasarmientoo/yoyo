@@ -2,8 +2,11 @@
 import Navbar from "@/components/Navbar.vue";
 import Footer from "@/components/Footer.vue";
 import aboutImage from "@/assets/images/about-us.png";
+
+useSeoMeta({
+  title: "About Us",
   description: "Page contains general information about YoYo center",
-})
+});
 </script>
 
 <template>
