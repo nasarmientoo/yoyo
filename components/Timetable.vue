@@ -80,7 +80,7 @@ const timetableMatrix = computed(() => {
       </thead>
       <tbody>
       <tr v-for="(row, index) in timetableMatrix" :key="index">
-        <th scope="row" class="teacher-name">
+        <th scope="row" class="artist-name">
           {{ row.name }}
         </th>
         <td
@@ -134,7 +134,7 @@ const timetableMatrix = computed(() => {
   color: #ffffff;
 }
 
-.teacher-name {
+.artist-name {
   background-color: #2816337d;
   font-weight: 500;
   text-align: left;

@@ -32,7 +32,7 @@
 .hero__button {
     position: absolute;
     bottom: 2rem;
-    left: 4rem;
+    left: 2rem;
     z-index: 10;
 }
 

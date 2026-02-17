@@ -21,7 +21,7 @@ useSeoMeta({
   <Navbar />
 
   <div class="page-wrapper">
-    <div v-if="artists?.length" class="teachers-section">
+    <div v-if="artists?.length" class="artists-section">
       <h1 class="sr-only">Our Artists</h1>
 
       <main class="main-content">

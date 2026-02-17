@@ -72,13 +72,13 @@ if (artist.value) {
   <div v-else-if="eventError">Error: {{ eventError.message }}</div>
 
   <div v-else>
-    <div class="teacher-body">
+    <div class="artist-body">
       <div class="artist-card">
         <div class="main-information">
           <div class="image-wrapper">
             <h1 class="title">{{ artist.name }} {{ artist.surname }}</h1>
             <img
-              class="teacher-profile-picture"
+              class="artist-profile-picture"
               :src="artist.photos?.[0]?.path"
               :alt="artist.name + ' ' + artist.surname + ' picture'"
             />
@@ -122,7 +122,7 @@ if (artist.value) {
 </template>
 
 <style scoped>
-.teacher-body {
+.artist-body {
   min-height: 88vh;
   position: relative;
   background-color: rgba(230, 218, 248, 0.1);
@@ -181,7 +181,7 @@ if (artist.value) {
   font-size: var(--font-text);
 }
 
-.teacher-profile-picture {
+.artist-profile-picture {
   width: 100%;
   height: 320px;
   object-fit: cover;
@@ -278,7 +278,7 @@ if (artist.value) {
     justify-self: center;
   }
 
-  .teacher-profile-picture {
+  .artist-profile-picture {
     width: 100%;
     height: auto;
     min-height: 300px;
