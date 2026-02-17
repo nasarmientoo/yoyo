@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
+import mainImage from '@/assets/images/main.png'
 
 interface Offer {
   id: number
@@ -9,6 +10,17 @@ interface Offer {
 }
 
 const offers = ref<Offer[]>([])
+
+const { app } = useRuntimeConfig()
+const baseUrl = import.meta.env.BASE_URL || app?.baseURL || '/'
+
+const resolveImagePath = (path: string): string => {
+  if (!path) return ''
+  if (path.startsWith('http://') || path.startsWith('https://')) return path
+  if (baseUrl && path.startsWith(baseUrl)) return path
+  const normalized = path.startsWith('/') ? path.slice(1) : path
+  return `${baseUrl}${normalized}`
+}
 
 useSeoMeta({
   title: "Home",
@@ -50,7 +62,7 @@ function getPriorityOneImage(photos: { path: string, priority: number }[]): stri
 
   <section class="hero">
     <div class="hero__image">
-      <img src="@/assets/images/main.png" alt="Young Artists Collective" />
+      <img :src="mainImage" alt="Young Artists Collective" />
       <InteractiveButton label="Our Events" to="/events" class="hero__button" />
     </div>
   </section>
@@ -61,7 +73,7 @@ function getPriorityOneImage(photos: { path: string, priority: number }[]): stri
       <NuxtLink to="/events?category=indie">
         <div class="BODY">
           <div class="overlap-group">
-            <img class="body" src="/icons/indie.png" alt="indie icon" />
+            <img class="body" :src="resolveImagePath('/icons/indie.png')" alt="indie icon" />
             <div class="div">INDIE</div>
           </div>
         </div>
@@ -70,7 +82,7 @@ function getPriorityOneImage(photos: { path: string, priority: number }[]): stri
       <NuxtLink to="/events?category=electronic">
         <div class="MIND">
           <div class="overlap">
-            <img class="mind" src="/icons/electronic.png" alt="electronic icon" />
+            <img class="mind" :src="resolveImagePath('/icons/electronic.png')" alt="electronic icon" />
             <div class="text-wrapper-2">ELECTRONIC</div>
           </div>
         </div>
@@ -79,7 +91,7 @@ function getPriorityOneImage(photos: { path: string, priority: number }[]): stri
       <NuxtLink to="/events?category=hiphop">
         <div class="SOUL">
           <div class="overlap-2">
-            <img class="soul" src="/icons/hiphop.png" alt="hip hop icon" />
+            <img class="soul" :src="resolveImagePath('/icons/hiphop.png')" alt="hip hop icon" />
             <div class="text-wrapper-3">HIP-HOP</div>
           </div>
         </div>
@@ -97,7 +109,7 @@ function getPriorityOneImage(photos: { path: string, priority: number }[]): stri
         <div class="offer-card__container">
           <div class="offer-card__content-wrapper">
             <div class="offer-card__image-wrapper">
-              <img :src="getPriorityOneImage(offer.photos)" class="offer-card__image" :alt="`Image for offer: ${offer.name}`" />
+              <img :src="resolveImagePath(getPriorityOneImage(offer.photos))" class="offer-card__image" :alt="`Image for offer: ${offer.name}`" />
             </div>
             <div class="offer-card__content">
               <client-only>

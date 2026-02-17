@@ -1,6 +1,7 @@
-<script setup lang="ts">
-useSeoMeta({
-  title: "About us",
+<script setup lang="js">
+import Navbar from "@/components/Navbar.vue";
+import Footer from "@/components/Footer.vue";
+import aboutImage from "@/assets/images/about-us.png";
   description: "Page contains general information about YoYo center",
 })
 </script>
@@ -14,7 +15,7 @@ useSeoMeta({
       <img
           style="background: lightgray 50% / cover no-repeat"
           class="hero-bg"
-          src="@/assets/images/about-us.png"
+          :src="aboutImage"
           alt="Background"
       />
 

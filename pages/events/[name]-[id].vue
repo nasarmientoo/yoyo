@@ -8,6 +8,17 @@ import { ref } from "vue";
 const route = useRoute();
 const eventItem = ref(null);
 
+const { app } = useRuntimeConfig();
+const baseUrl = app?.baseURL || "/";
+
+const resolveImagePath = (path: string): string => {
+  if (!path) return "";
+  if (path.startsWith("http://") || path.startsWith("https://")) return path;
+  if (baseUrl && path.startsWith(baseUrl)) return path;
+  const normalized = path.startsWith("/") ? path.slice(1) : path;
+  return `${baseUrl}${normalized}`;
+};
+
 const slug = route.params.id;
 const id = slug.split("-").pop();
 
@@ -97,7 +108,7 @@ useSeoMeta({
       <div class="main-content">
         <div class="image-section">
           <img
-            :src="eventItem.photos?.[0]?.path"
+            :src="resolveImagePath(eventItem.photos?.[0]?.path || '')"
             :alt="eventItem.name"
             class="activity-image"
           />
@@ -133,7 +144,7 @@ useSeoMeta({
                   :to="'/artist' + '-' + artist.name.toLowerCase() + '-' + artist.surname.toLowerCase() + '-' + artist.id"
                   class="artist-card"
                 >
-                  <img :src="artist.photos?.[0]?.path" :alt="artist.name" />
+                  <img :src="resolveImagePath(artist.photos?.[0]?.path || '')" :alt="artist.name" />
                   <p>{{ artist.name }} {{ artist.surname }}</p>
                 </NuxtLink>
               </div>

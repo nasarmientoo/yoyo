@@ -8,6 +8,17 @@ import ClickableCard from "@/components/ClickableCard.vue";
 const route = useRoute();
 const router = useRouter();
 
+const { app } = useRuntimeConfig();
+const baseUrl = import.meta.env.BASE_URL || app?.baseURL || "/";
+
+const resolveImagePath = (path: string): string => {
+  if (!path) return "";
+  if (path.startsWith("http://") || path.startsWith("https://")) return path;
+  if (baseUrl && path.startsWith(baseUrl)) return path;
+  const normalized = path.startsWith("/") ? path.slice(1) : path;
+  return `${baseUrl}${normalized}`;
+};
+
 useSeoMeta({
   title: "Events",
   description: "Page contains all events with filtering by genres",
@@ -123,7 +134,7 @@ const filteredEvents = computed(() => {
         :key="cat.key"
         @click="selectCategory(cat.key)"
       >
-        <img :src="`/icons/${cat.icon}.png`" :alt="cat.label" />
+        <img :src="resolveImagePath(`/icons/${cat.icon}.png`)" :alt="cat.label" />
         <span :class="`text-${cat.key}`">{{ cat.label }}</span>
       </div>
     </div>
@@ -136,7 +147,7 @@ const filteredEvents = computed(() => {
         v-for="eventItem in filteredEvents"
         :key="eventItem.id"
         :label="eventItem.name.toUpperCase()"
-        :img_src="eventItem.photos?.[0]?.path"
+        :img_src="resolveImagePath(eventItem.photos?.[0]?.path || '')"
         :to="`/events/${eventItem.name.toLowerCase().trim().replace(/\s+/g, '-').replace(/[^\w-]/g, '')}-${eventItem.id}`"
       />
     </transition-group>

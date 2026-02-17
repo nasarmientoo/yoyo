@@ -1,6 +1,7 @@
 <script setup lang="js">
 import Navbar from "@/components/Navbar.vue";
 import Footer from "@/components/Footer.vue";
+import contactImage from "@/assets/images/contact-us.png";
 import { ref } from 'vue';
 import { useSeoMeta } from '#app'
 
@@ -126,7 +127,7 @@ useSeoMeta({
     </div>
 
     <div class="contact-image-container">
-      <img class="contact-image" src="/assets/images/contact-us.png" alt="Contact Us">
+      <img class="contact-image" :src="contactImage" alt="Contact Us">
     </div>
 
   </div>

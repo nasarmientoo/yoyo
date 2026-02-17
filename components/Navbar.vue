@@ -2,6 +2,17 @@
 import { ref, onMounted, onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
 
+const { app } = useRuntimeConfig();
+const baseUrl = app?.baseURL || '/';
+
+const withBaseUrl = (path) => {
+  if (!path) return '';
+  if (path.startsWith('http://') || path.startsWith('https://')) return path;
+  if (baseUrl && path.startsWith(baseUrl)) return path;
+  const normalized = path.startsWith('/') ? path.slice(1) : path;
+  return `${baseUrl}${normalized}`;
+};
+
 const router = useRouter();
 const isMenuOpen = ref(false);
 
@@ -31,7 +42,7 @@ onUnmounted(() => {
     <!-- Fullsize navbar-->
     <div class="nav-links">
       <router-link to="/" class="logo-link">
-        <img class="logo" src="/logo.jpg" alt="home link" />
+        <img class="logo" :src="withBaseUrl('logo.jpg')" alt="home link" />
 
       </router-link>
 
@@ -49,7 +60,7 @@ onUnmounted(() => {
     <div class="nav-burger">
       <div class="burger-left">
         <router-link to="/" class="logo-link">
-          <img class="logo" src="/logo.jpg" alt="Logotype of the YoYo center" />
+          <img class="logo" :src="withBaseUrl('logo.jpg')" alt="Logotype of the YoYo center" />
 
         </router-link>
 
