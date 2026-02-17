@@ -4,6 +4,7 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
 
   app: {
+    baseURL: '/YoYo/',
     head: {
       title: 'YoYo House',
       htmlAttrs: { lang: 'en' },
@@ -19,6 +20,10 @@ export default defineNuxtConfig({
 
   css: ['~/assets/global.css'],
   modules: ['@nuxt/image'],
+
+  nitro: {
+    preset: 'github_pages'
+  },
 
 
   runtimeConfig: {
