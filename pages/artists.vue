@@ -3,13 +3,24 @@ import ClickableCard from "@/components/ClickableCard.vue";
 import Navbar from "@/components/Navbar.vue";
 import Footer from "@/components/Footer.vue";
 
+const { app } = useRuntimeConfig();
+const baseUrl = import.meta.env.BASE_URL || app?.baseURL || "/";
+
+const resolveImagePath = (path: string): string => {
+  if (!path) return "";
+  if (path.startsWith("http://") || path.startsWith("https://")) return path;
+  if (baseUrl && path.startsWith(baseUrl)) return path;
+  const normalized = path.startsWith("/") ? path.slice(1) : path;
+  return `${baseUrl}${normalized}`;
+};
+
 //Get all artists from database
-const { data, error } = await useFetch("/api/artist/getAllArtists", {
-  server: true,
+const { data, error } = await useFetch(resolveImagePath("/data/artists.json"), {
+  server: false,
   lazy: false,
 });
 
-const artists = computed(() => data.value?.data ?? null);
+const artists = computed(() => data.value ?? null);
 
 useSeoMeta({
   title: "All artists",
@@ -28,7 +39,7 @@ useSeoMeta({
         <div class="grid-wrapper">
           <div v-for="(artist, index) in artists" :key="index" class="grid-item">
             <ClickableCard
-              :img_src="artist.photos?.[0]?.path"
+              :img_src="resolveImagePath(artist.photos?.[0]?.path || '')"
               :to="'artist-' + artist.name.toLowerCase() + '-' + artist.surname.toLowerCase() + '-' + artist.id"
               :label="artist.name + ' ' + artist.surname"
             />

@@ -48,7 +48,11 @@ const categoryId = computed(
   () => categoryMap.find((c) => c.key === selectedCategory.value)?.id
 );
 
-const categoryDescription = ref(null);
+const categories = ref<{ id: number; description: string }[]>([]);
+const categoryDescription = computed(() => {
+  if (!categoryId.value) return null;
+  return categories.value.find((c) => c.id === categoryId.value)?.description || null;
+});
 
 interface EventItem {
   id: number;
@@ -59,10 +63,10 @@ interface EventItem {
 
 const allEvents = ref<EventItem[]>([]);
 
-const { data, error } = await useFetch<{ success: boolean; data }>(
-  "/api/event/getAllEvents",
+const { data, error } = await useFetch<EventItem[]>(
+  resolveImagePath("/data/events.json"),
   {
-    server: true,
+    server: false,
     lazy: false,
   }
 );
@@ -70,48 +74,24 @@ const { data, error } = await useFetch<{ success: boolean; data }>(
 if (error.value) {
   console.error("Fetch error:", error.value);
 } else {
-  allEvents.value = (data.value?.data ?? []).map((eventItem) => ({
+  allEvents.value = (data.value ?? []).map((eventItem) => ({
     ...eventItem,
     photos: Array.isArray(eventItem.photos) ? eventItem.photos : [],
   }));
 }
 
-if (categoryId.value) {
-  const { data, error } = await useFetch<{ success: boolean; data }>(
-    "/api/getCategory?id=" + String(categoryId.value),
-    {
-      server: true,
-      lazy: false,
-    }
-  );
-
-  if (error.value) {
-    console.error("Fetch error:", error.value);
-  } else {
-    categoryDescription.value = data.value?.data?.description;
-  }
-}
-
-watch(categoryId, async (newId) => {
-  if (!newId) {
-    categoryDescription.value = null;
-    return;
-  }
-
-  const { data, error } = await useFetch<{
-    success: boolean;
-    data: { description: string };
-  }>(`/api/getCategory?id=${newId}`, {
-    server: false,
-    lazy: false,
-  });
-
-  if (error.value) {
-    console.error("Fetch error:", error.value);
-  } else {
-    categoryDescription.value = data.value?.data?.description;
-  }
+const { data: categoryData, error: categoryError } = await useFetch<
+  { id: number; description: string }[]
+>(resolveImagePath("/data/categories.json"), {
+  server: false,
+  lazy: false,
 });
+
+if (categoryError.value) {
+  console.error("Fetch error:", categoryError.value);
+} else {
+  categories.value = categoryData.value ?? [];
+}
 
 // Category filter
 const filteredEvents = computed(() => {

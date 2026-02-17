@@ -31,18 +31,18 @@ useSeoMeta({
 const pending = ref(true)
 
 //Get the highlighted events
-const { data, error } = await useFetch<{ success: boolean; data: Offer[] }>(
-  '/api/event/getHighlightEvent',
-    {
-      server: true,
-      lazy: false
-    }
+const { data, error } = await useFetch<Offer[]>(
+  resolveImagePath('/data/highlight-events.json'),
+  {
+    server: false,
+    lazy: false,
+  }
 )
 
 if (error.value) {
   console.error('Fetch error:', error.value)
 } else {
-  offers.value = (data.value?.data ?? []).map(activity => ({
+  offers.value = (data.value ?? []).map(activity => ({
     ...activity,
     photos: Array.isArray(activity.photos) ? activity.photos : []
   }))

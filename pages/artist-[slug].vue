@@ -8,32 +8,43 @@ const route = useRoute();
 const rawSlug = route.params.slug;
 const id = rawSlug.split("-").pop();
 
+const { app } = useRuntimeConfig();
+const baseUrl = import.meta.env.BASE_URL || app?.baseURL || "/";
+
+const resolveImagePath = (path) => {
+  if (!path) return "";
+  if (path.startsWith("http://") || path.startsWith("https://")) return path;
+  if (baseUrl && path.startsWith(baseUrl)) return path;
+  const normalized = path.startsWith("/") ? path.slice(1) : path;
+  return `${baseUrl}${normalized}`;
+};
+
 // Firstly fetch artist data
 const {
   data: artistData,
   error: artistError,
   pending: pendingArtist,
-} = await useFetch("/api/artist/getArtistById", {
-  query: { id },
-  server: true,
+} = await useFetch(resolveImagePath("/data/artists.json"), {
+  server: false,
   lazy: false,
 });
 
 // Then fetch artist's related events
 const { data: eventData, error: eventError } = await useFetch(
-  "/api/artist/getRelatedEvents",
+  resolveImagePath("/data/events-by-artist.json"),
   {
-    query: { id },
-    server: true,
+    server: false,
     lazy: false,
   }
 );
 
 // Compute artist object with all the queried information
-const artist = computed(() => artistData.value?.data ?? null);
+const artist = computed(() =>
+  (artistData.value ?? []).find((item) => String(item.id) === String(id)) ?? null
+);
 
 const artistEvents = computed(() =>
-  (eventData.value?.data ?? []).map((item) => item.Events).filter(Boolean)
+  (eventData.value?.[id] ?? []).map((item) => item.Events).filter(Boolean)
 );
 
 // Window resize (client-only)
@@ -79,7 +90,7 @@ if (artist.value) {
             <h1 class="title">{{ artist.name }} {{ artist.surname }}</h1>
             <img
               class="artist-profile-picture"
-              :src="artist.photos?.[0]?.path"
+              :src="resolveImagePath(artist.photos?.[0]?.path || '')"
               :alt="artist.name + ' ' + artist.surname + ' picture'"
             />
           </div>
@@ -101,7 +112,7 @@ if (artist.value) {
               <ClickableCard
                 v-for="eventItem in artistEvents"
                 :key="eventItem.id"
-                :img_src="eventItem.photos[0].path"
+                :img_src="resolveImagePath(eventItem.photos?.[0]?.path || '')"
                 :to="'/events/' + eventItem.name.toLowerCase() + '-' + eventItem.id"
                 :label="eventItem.name"
                 :card_width="200"

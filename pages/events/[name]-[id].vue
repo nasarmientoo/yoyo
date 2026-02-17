@@ -4,12 +4,11 @@ import Footer from "@/components/Footer.vue";
 import Timetable from "@/components/Timetable.vue";
 
 import { useRoute } from "vue-router";
-import { ref } from "vue";
+import { ref, computed } from "vue";
 const route = useRoute();
-const eventItem = ref(null);
 
 const { app } = useRuntimeConfig();
-const baseUrl = app?.baseURL || "/";
+const baseUrl = import.meta.env.BASE_URL || app?.baseURL || "/";
 
 const resolveImagePath = (path: string): string => {
   if (!path) return "";
@@ -46,55 +45,60 @@ interface ArtistWithSchedule {
   timetable: Record<string, string>;
 }
 
-const eventData = ref<EventItem>(null);
-// First query: fetch event by ID
-const { data, error } = await useFetch<{ success: boolean; data: EventItem }>(
-  "/api/event/getEventById?id=" + String(id),
+const { data: eventsData, error: eventsError } = await useFetch<EventItem[]>(
+  resolveImagePath("/data/events.json"),
   {
-    server: true,
+    server: false,
     lazy: false,
   }
 );
 
-if (error.value) {
-  console.error("Fetch error:", error.value);
-} else {
-  eventData.value = {
-    ...data.value?.data,
-    photos: Array.isArray(data.value?.data?.photos) ? data.value.data.photos : [],
-  };
+if (eventsError.value) {
+  console.error("Fetch error:", eventsError.value);
 }
 
-const artists = ref<ArtistWithSchedule[]>([]);
+const eventData = computed<EventItem | null>(() => {
+  const events = eventsData.value ?? [];
+  const found = events.find((item) => String(item.id) === String(id));
+  if (!found) return null;
+  return {
+    ...found,
+    photos: Array.isArray(found.photos) ? found.photos : [],
+  } as EventItem;
+});
 
-// Second query: fetch artists and their timetable from join table
-const { data: artistData, error: artistError } = await useFetch<{
-  success: boolean;
-  data;
-}>(`/api/artist/getArtistByEvent?id=${id}`, {
-  server: true,
+const { data: artistsByEventData, error: artistError } = await useFetch<
+  Record<string, { timetable: string; Artists: ArtistWithSchedule }[]>
+>(resolveImagePath("/data/artists-by-event.json"), {
+  server: false,
   lazy: false,
 });
 
 if (artistError.value) {
   console.error("Fetch error:", artistError.value);
-} else {
-  artists.value = artistData.value?.data
-    ?.filter((item) => item.Artists)
+}
+
+const artists = computed<ArtistWithSchedule[]>(() => {
+  const rows = artistsByEventData.value?.[id] ?? [];
+  return rows
+    .filter((item) => item.Artists)
     .map((item) => ({
       ...item.Artists,
       timetable: JSON.parse(item.timetable),
       photos: Array.isArray(item.Artists.photos) ? item.Artists.photos : [],
     }));
-}
+});
 
-eventItem.value = {
-  ...eventData.value,
-  Artists: artists.value,
-};
+const eventItem = computed(() => {
+  if (!eventData.value) return null;
+  return {
+    ...eventData.value,
+    Artists: artists.value,
+  };
+});
 
 useSeoMeta({
-  title: eventItem.value?.name,
+  title: () => eventItem.value?.name || "Event",
   description:
     "Page contains information about the event, artists who perform, and timetable",
 });
